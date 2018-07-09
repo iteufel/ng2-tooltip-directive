@@ -1,15 +1,17 @@
-import {Component, ElementRef, HostListener, HostBinding, Input, OnInit, EventEmitter} from '@angular/core';
+import { Component, ElementRef, HostListener, HostBinding, Input, OnInit, EventEmitter } from '@angular/core';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'tooltip',
   templateUrl: './tooltip.component.html',
-  host: {'class': 'tooltip'}, 
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { 'class': 'tooltip' },
   styleUrls: ['./tooltip.component.sass']
 })
 
-export class TooltipComponent {
+export class TooltipComponent implements OnInit {
 
-  _show:boolean = false;
+  _show = false;
 
   /* tslint:disable:no-input-rename */
 
@@ -29,46 +31,46 @@ export class TooltipComponent {
 
   @HostListener('transitionend', ['$event'])
   transitionEnd(event) {
-    if (this.show){
+    if (this.show) {
       this.events.emit('shown');
     }
   }
 
-  @Input() set show (value:boolean) {
-    if (value){
+  @Input() set show(value: boolean) {
+    if (value) {
       this.setPosition();
     }
     this._show = this.hostClassShow = value;
   }
-  get show ():boolean {
+  get show(): boolean {
     return this._show;
   }
 
-  get placement(){
+  get placement() {
     return this.data.options.placement;
   }
 
-  get elemetn(){
+  get elemetn() {
     return this.data.element;
   }
 
-  get elementPosition(){
+  get elementPosition() {
     return this.data.elementPosition;
   }
 
-  get options(){
+  get options() {
     return this.data.options;
   }
 
-  get value(){
+  get value() {
     return this.data.value;
   }
 
-  get tooltipOffset():number {
+  get tooltipOffset(): number {
     return Number(this.data.options.offset);
   }
 
-  get isThemeLight(){
+  get isThemeLight() {
     return this.options['theme'] === 'light';
   }
 
@@ -83,7 +85,7 @@ export class TooltipComponent {
     this.setStyles();
   }
 
-  setPosition():void {
+  setPosition(): void {
     const elemetnHeight = this.elemetn.offsetHeight;
     const elemetnWidth = this.elemetn.offsetWidth;
     const tooltipHeight = this.elementRef.nativeElement.clientHeight;
@@ -116,29 +118,29 @@ export class TooltipComponent {
     }
   }
 
-  setPlacementClass():void {
-    this.elementRef.nativeElement.classList.add('tooltip-'+this.placement);
+  setPlacementClass(): void {
+    this.elementRef.nativeElement.classList.add('tooltip-' + this.placement);
   }
 
-  setZIndex():void {
-    if (this.options['z-index'] !== 0){
+  setZIndex(): void {
+    if (this.options['z-index'] !== 0) {
       this.hostStyleZIndex = this.options['z-index'];
     }
   }
 
-  setCustomClass(){
-    if (this.options['tooltip-class']){
+  setCustomClass() {
+    if (this.options['tooltip-class']) {
       this.elementRef.nativeElement.classList.add(this.options['tooltip-class']);
     }
   }
 
-  setAnimationDuration(){
-    if (Number(this.options['animation-duration']) != this.options['animation-duration-default']){
-      this.hostStyleTransition = 'opacity '+this.options['animation-duration']+'ms';
+  setAnimationDuration() {
+    if (Number(this.options['animation-duration']) !== this.options['animation-duration-default']) {
+      this.hostStyleTransition = 'opacity ' + this.options['animation-duration'] + 'ms';
     }
   }
 
-  setStyles(){
+  setStyles() {
     this.hostClassShadow = this.options['shadow'];
     this.hostClassLight = this.isThemeLight;
   }
